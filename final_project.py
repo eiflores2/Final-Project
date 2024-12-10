@@ -142,7 +142,12 @@ def read_and_clean_csv(file_path, sales_column, category_column, first_n_chars=3
         data[sales_column] = data[sales_column] * 0.012  # Correct INR to USD conversion rate
 
     if category_column in data.columns:
-        data['Main Category'] = data[category_column].apply(lambda x: x[:first_n_chars] if isinstance(x, str) else x)
+        category_mapping = {
+            'Car': 'Ele', 'Com': 'Ele', 'Ele': 'Ele',
+            'Hea': 'Hom', 'Hom': 'Hom',
+            'Mus': 'Mus', 'Off': 'Mus', 'Toy': 'Mus'
+        }
+        data['Main Category'] = data[category_column].apply(lambda x: category_mapping.get(x[:first_n_chars], x[:first_n_chars]))
     elif 'Product Category' in data.columns:
         data['Main Category'] = data['Product Category']
     else:
@@ -183,6 +188,20 @@ def plot_total_sales(total_sales_df, title):
     plt.tight_layout()
     plt.show()
 
+def plot_average_rating(average_rating_df, title):
+    plt.figure(figsize=(12, 8))
+    sns.barplot(x=average_rating_df.iloc[:, 0], y=average_rating_df.iloc[:, 1], palette='viridis')
+
+    for index, row in average_rating_df.iterrows():
+        plt.text(index, row['Average Rating'], f'{row["Average Rating"]:.2f}', color='black', ha="center")
+
+    plt.xlabel('Product Category')
+    plt.ylabel('Average Rating')
+    plt.title(title)
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.show()
+
 # File paths
 amazon_file = 'amazon.csv'
 superstore_file = 'superstore.csv'
@@ -190,6 +209,13 @@ superstore_file = 'superstore.csv'
 # Read, clean, and process the datasets
 amazon_data = read_and_clean_csv(amazon_file, 'discounted_price', 'category', convert_to_usd=True)
 superstore_data = read_and_clean_csv(superstore_file, 'Total Amount', 'Product Category')
+
+amazon_average_rating = calculate_average_ratings(amazon_data, 'Main Category', 'rating')
+
+print("Amazon Average Rating by Catehory:")
+print(amazon_average_rating)
+
+plot_average_rating(amazon_average_rating, 'Amazon Average Rating by Category')
 
 # Check column names for superstore_data to find the transaction date column
 print("Superstore Data Columns:", superstore_data.columns)
@@ -219,8 +245,10 @@ X_train_amazon, X_test_amazon, y_train_amazon, y_test_amazon = train_test_split(
 reg_amazon = LinearRegression()
 reg_amazon.fit(X_train_amazon, y_train_amazon)
 y_pred_amazon = reg_amazon.predict(X_test_amazon)
+mse_amazon = mean_squared_error(y_test_amazon, y_pred_amazon)
+rmse_amazon = mse_amazon ** 0.5
 print("Amazon Regression Results:")
-print("RMSE:", mean_squared_error(y_test_amazon, y_pred_amazon, squared=False))
+print("RMSE:", rmse_amazon)
 print("R²:", r2_score(y_test_amazon, y_pred_amazon))
 
 # Regression Model for Superstore
@@ -231,8 +259,10 @@ X_train_superstore, X_test_superstore, y_train_superstore, y_test_superstore = t
 reg_superstore = LinearRegression()
 reg_superstore.fit(X_train_superstore, y_train_superstore)
 y_pred_superstore = reg_superstore.predict(X_test_superstore)
+mse_superstore = mean_squared_error(y_test_superstore, y_pred_superstore)
+rmse_superstore = mse_superstore ** 0.5
 print("Superstore Regression Results:")
-print("RMSE:", mean_squared_error(y_test_superstore, y_pred_superstore, squared=False))
+print("RMSE:", rmse_superstore)
 print("R²:", r2_score(y_test_superstore, y_pred_superstore))
 
 # Classification Model for Amazon
