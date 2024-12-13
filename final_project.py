@@ -242,6 +242,7 @@ X_amazon = amazon_data[['discounted_price']]
 y_amazon = amazon_data['discounted_price']
 X_train_amazon, X_test_amazon, y_train_amazon, y_test_amazon = train_test_split(X_amazon, y_amazon, test_size=0.3, random_state=42)
 
+
 reg_amazon = LinearRegression()
 reg_amazon.fit(X_train_amazon, y_train_amazon)
 y_pred_amazon = reg_amazon.predict(X_test_amazon)
@@ -270,12 +271,15 @@ amazon_data['Performance'] = amazon_data['discounted_price'].apply(
     lambda x: 'High' if x >= amazon_data['discounted_price'].median() else 'Low'
 )
 
+# Prepare the data for classification
 X_amazon_class = amazon_data[['discounted_price']]
 y_amazon_class = amazon_data['Performance']
 X_train_amazon_class, X_test_amazon_class, y_train_amazon_class, y_test_amazon_class = train_test_split(
     X_amazon_class, y_amazon_class, test_size=0.3, random_state=42
 )
 
+
+#Train the random forest classifier
 clf_amazon = RandomForestClassifier(random_state=42)
 clf_amazon.fit(X_train_amazon_class, y_train_amazon_class)
 y_pred_amazon_class = clf_amazon.predict(X_test_amazon_class)
@@ -294,3 +298,14 @@ plt.show()
 plot_total_sales(calculate_total_sales(amazon_data, 'Main Category', 'discounted_price'), 'Amazon Total Sales by Category')
 plot_total_sales(superstore_monthly_sales.groupby('Main Category')['Total Amount'].sum().reset_index(), 'Superstore Total Sales by Category')
 
+
+# https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.astype.html?form=MG0AV3
+# https://scikit-learn.org/stable/modules/generated/sklearn.metrics.mean_squared_error.html?form=MG0AV3
+# https://scikit-learn.org/stable/modules/generated/sklearn.metrics.r2_score.html?form=MG0AV3
+# https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.text.html?form=MG0AV3
+# https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.reset_index.html?form=MG0AV3
+
+
+# dataset
+# https://www.kaggle.com/datasets/mohammadtalib786/retail-sales-dataset
+# https://www.kaggle.com/datasets/karkavelrajaj/amazon-sales-dataset
