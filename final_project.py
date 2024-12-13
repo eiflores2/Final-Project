@@ -309,3 +309,46 @@ plot_total_sales(superstore_monthly_sales.groupby('Main Category')['Total Amount
 # dataset
 # https://www.kaggle.com/datasets/mohammadtalib786/retail-sales-dataset
 # https://www.kaggle.com/datasets/karkavelrajaj/amazon-sales-dataset
+
+
+# Import Libraries: The code imports several Python libraries:
+
+# pandas: Used for data manipulation and analysis.
+# matplotlib.pyplot and seaborn: Used for creating visualizations.
+# sklearn: Used for splitting data into training and testing sets, performing regression, and classification.
+# Read and Clean Data:
+# The read_and_clean_csv function reads a CSV file, cleans the sales data by removing currency symbols, and optionally converts sales to USD. It also maps detailed product categories to broader categories.
+# Calculate Total Sales:
+# The calculate_total_sales function groups the sales data by category and calculates the total sales for each category.
+# Calculate Average Ratings:
+# The calculate_average_ratings function calculates the average rating for each product category, converting non-numeric ratings to numeric and handling any errors.
+# Plot Total Sales:
+# The plot_total_sales function creates a bar plot showing the total sales for each product category.
+# Plot Average Ratings:
+# The plot_average_rating function creates a bar plot showing the average rating for each product category.
+# Load and Process Data:
+# The script reads and cleans data from two CSV files (Amazon and Superstore), processes the data, and calculates average ratings for the Amazon data.
+# Print and Plot Average Ratings:
+# The average ratings for Amazon categories are printed and plotted.
+# Process Date Columns for Superstore Data:
+# The script checks for date columns in the Superstore data, converts them to datetime format, and adds a mock date column if none are found.
+# Add Seasonality Features:
+# The script adds month and day-of-week features to the Superstore data to account for seasonality.
+# Aggregate Monthly Sales for Superstore:
+# The script groups the Superstore data by category and month, calculating the total sales for each combination.
+# Regression Models:
+# Amazon: The script trains a linear regression model on the Amazon data to predict future sales based on the discounted price.
+# Superstore: Similarly, it trains a linear regression model on the Superstore data to predict future sales based on the month.
+# Print Regression Results:
+# The script calculates and prints the Root Mean Squared Error (RMSE) and R² score for both regression models.
+# Classification Model for Amazon:
+# The script adds a Performance column to the Amazon data, classifying products as "High" or "Low" based on the median discounted price.
+# It then trains a random forest classifier to predict the performance category of the products.
+# The script prints the classification results, including a classification report and accuracy score.
+# Visualize Superstore Sales Trends:
+# The script creates a line plot showing the monthly sales trends for Superstore categories.
+# Plot Total Sales:
+# The script plots the total sales for each category from both Amazon and Superstore data.
+# Overall, the script performs data cleaning, sales and ratings analysis, regression and classification modeling, and visualizes the results to compare sales performance between Amazon and Superstore and predict future sales trends.
+# If you have any more questions or need further clarifications, let me know!
+
